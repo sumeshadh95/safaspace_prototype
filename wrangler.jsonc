@@ -1,0 +1,10 @@
+// Cloudflare (Workers static assets): upload the combined site built by `npm run build`.
+//   /      -> landing page
+//   /app/  -> SafeSpace app
+{
+  "name": "safaspace-prototype",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./dist-site"
+  }
+}

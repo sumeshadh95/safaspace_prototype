@@ -55,24 +55,23 @@ The seed script notices the change and rebuilds `public/phone/`. To redraw the o
 
 ## Put it online (one site: landing page + app)
 
-`npm run build:site` builds everything into `dist-site/`:
+`npm run build` builds everything into `dist-site/`. `npm run build:app` builds only the app into `dist/`.
 - `/` is the landing page (from `landing-page/`)
 - `/app/` is the SafeSpace app
 
 The landing page's "Try the demo" buttons point to `/app/` automatically.
 
-**Cloudflare Pages:**
-1. Go to **Workers & Pages → Create → Pages → Connect to Git** and choose this repository.
-2. Enter these settings:
-   - Framework preset: None
-   - Build command: `npm run build:site`
-   - Build output directory: `dist-site`
-   - Root directory: empty
-3. Deploy. The Node version comes from `.nvmrc` (22).
+**Cloudflare (Workers, connected to this GitHub repository):** the defaults work.
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- `wrangler.jsonc` tells Cloudflare to upload `dist-site/`.
+- The Node version comes from `.nvmrc` (22).
 
-**Vercel:** import the repository and set Build command to `npm run build:site` and Output directory to `dist-site`.
+**Cloudflare Pages** works too: set Build command to `npm run build` and Build output directory to `dist-site`.
 
-After that, every push to `main` redeploys the whole site. To test the built site locally, run `npm run build:site`, then `npx vite preview --outDir dist-site`.
+**Vercel:** import the repository and set Output directory to `dist-site` (Build command `npm run build`).
+
+After that, every push to `main` redeploys the whole site. To test the built site locally, run `npm run build`, then `npx vite preview --outDir dist-site`.
 
 ## Check the full journey automatically
 

@@ -8,11 +8,11 @@
     "seed": "node scripts/seed-phone.mjs",
     "predev": "npm run seed",
     "dev": "vite",
-    "prebuild": "npm run seed",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/build-site.mjs",
     "preview": "vite preview",
     "journey": "node scripts/journey.mjs",
-    "build:site": "node scripts/build-site.mjs"
+    "build:site": "node scripts/build-site.mjs",
+    "build:app": "tsc --noEmit && vite build"
   },
   "dependencies": {
     "lucide-react": "^1.67.0",
