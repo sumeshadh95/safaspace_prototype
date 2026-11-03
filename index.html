@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F6F8F7" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+    <title>SafeSpace Storage Guide</title>
+    <!-- Apply the saved theme before the first paint (no flash of the wrong colours) -->
+    <script>
+      try {
+        var dark = localStorage.getItem('safespace.theme') === 'dark';
+        var saving = localStorage.getItem('safespace.powerSaving') === 'true' && location.hash !== '#/cloud';
+        document.documentElement.dataset.theme = dark || saving ? 'dark' : 'light';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

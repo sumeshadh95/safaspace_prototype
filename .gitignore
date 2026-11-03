@@ -1,0 +1,7 @@
+node_modules
+dist
+public/phone
+src/data/phoneFiles.json
+test-results
+journey-screenshots
+dist-site

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeSpace — Make room on your phone, keep every memory</title>
+    <meta
+      name="description"
+      content="SafeSpace shows which photos, videos and documents are already safe in your cloud, then helps you clear space on your phone in a few simple taps. Nothing is deleted without asking."
+    />
+    <meta name="theme-color" content="#2448A8" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SafeSpace" />
+    <meta property="og:title" content="SafeSpace — Make room on your phone, keep every memory" />
+    <meta
+      property="og:description"
+      content="Clear space on your phone in a few simple taps. Nothing is deleted without asking, and Undo is always there."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%" />
+    <meta property="og:image" content="%VITE_SITE_URL%og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SafeSpace: a phone showing which photos are safe in the cloud, over a calm lake landscape" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonts load without blocking the first paint. The handwriting font only loads the
+         letters of "Made in Mikkeli" (text=…), so it stays tiny. -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&text=Made%20in%20Mikkeli&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&text=Made%20in%20Mikkeli&display=swap" />
+      <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+    </noscript>
+  </head>
+  <body>
+    <div id="root"><!--app--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

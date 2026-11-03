@@ -1,0 +1,235 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Light values are the original design; the dark palette below swaps every token
+ * at once, so components only ever use token classes (bg-card, text-ink, bg-primary …).
+ *   primary  = filled buttons (white text on it)
+ *   blue     = blue text, icons and outlines
+ *   success  = filled green circles (white icon on it)
+ */
+@theme {
+  --font-sans: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-bg: #f6f8f7;
+  --color-card: #ffffff;
+  --color-card-2: #edf1ef;
+  --color-ink: #17262a;
+  --color-ink-2: #3c4b4f;
+  --color-muted: #5b6a6e;
+  --color-line: #dde3e1;
+  --color-outline: #c9d1cf;
+  --color-track: #e7ebea;
+
+  --color-primary: #2448a8;
+  --color-primary-hover: #1b3889;
+  --color-blue: #2448a8;
+  --color-blue-soft: #e6eef9;
+
+  --color-green: #1e6b46;
+  --color-green-fill: #2e8b5a;
+  --color-green-soft: #e4f1e9;
+  --color-success: #1e6b46;
+
+  --color-orange: #d97a1e;
+  --color-orange-soft: #fcebd9;
+  --color-orange-ink: #8a4208;
+  --color-unsaved: #f3e3d2;
+
+  --color-red: #a63a2b;
+  --color-red-soft: #f8e9e6;
+
+  --color-violet-soft: #efe9f8;
+  --color-violet: #5b3fa0;
+
+  --color-toast: #17262a;
+  --color-scrim: rgb(23 38 42 / 0.4);
+  --color-desk: #dfe5e3;
+  --color-sky: #e3ecf8;
+
+  --shadow-card: 0 1px 2px rgba(23, 38, 42, 0.06), 0 8px 24px rgba(23, 38, 42, 0.05);
+  --shadow-lift: 0 2px 4px rgba(23, 38, 42, 0.06), 0 18px 36px -12px rgba(23, 38, 42, 0.18);
+  --shadow-sheet: 0 -8px 40px rgba(23, 38, 42, 0.18);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #0e1618;
+  --color-card: #172226;
+  --color-card-2: #1f2c30;
+  --color-ink: #e9efed;
+  --color-ink-2: #b9c7c9;
+  --color-muted: #95a6a9;
+  --color-line: #29373b;
+  --color-outline: #3b4b50;
+  --color-track: #29363a;
+
+  --color-primary: #3c63cc;
+  --color-primary-hover: #4b72dc;
+  --color-blue: #a9c1ff;
+  --color-blue-soft: #1b2948;
+
+  --color-green: #8ad8ab;
+  --color-green-fill: #3a9d68;
+  --color-green-soft: #153027;
+  --color-success: #2f8a5a;
+
+  --color-orange: #e48c3a;
+  --color-orange-soft: #3a2916;
+  --color-orange-ink: #ffc58c;
+  --color-unsaved: #3a2e21;
+
+  --color-red: #ff9d8f;
+  --color-red-soft: #3a201c;
+
+  --color-violet-soft: #29223f;
+  --color-violet: #cbbcff;
+
+  --color-toast: #2a3a3f;
+  --color-scrim: rgb(0 0 0 / 0.6);
+  --color-desk: #070b0c;
+  --color-sky: #132036;
+
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 36px -12px rgba(0, 0, 0, 0.6);
+  --shadow-sheet: 0 -8px 40px rgba(0, 0, 0, 0.6);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-desk);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+@layer base {
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 3px;
+}
+.saver :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* Soft coloured glow under the main blue buttons */
+.glow-primary {
+  box-shadow: 0 12px 26px -12px color-mix(in oklab, var(--color-primary) 80%, transparent);
+}
+
+/* Calm pulse around the phone while checking */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+.pulse-ring {
+  animation: pulse-ring 2.4s ease-out infinite;
+}
+.pulse-ring-delay {
+  animation-delay: 1.2s;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* "Calling…" dots */
+@keyframes dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+/* Camera shutter flash */
+@keyframes flash {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.sheet-in {
+  animation: sheet-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+.fade-in-slow {
+  animation: fade-in 0.45s ease-out;
+}
+.rise-in {
+  animation: rise-in 0.25s ease-out;
+}
+.dot {
+  animation: dot 1.4s infinite;
+}
+.flash {
+  animation: flash 0.5s ease-out forwards;
+}
+
+.scroll-area {
+  scrollbar-width: none;
+}
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
