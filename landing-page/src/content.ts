@@ -31,10 +31,10 @@ export const hero = {
   message:
     'SafeSpace checks which photos, videos and documents are already safe in your cloud, then helps you clear space in a few simple taps — in plain words, and nothing is deleted without asking.',
   ticks: ['Nothing deleted without asking', 'Undo anytime', 'Large text, plain words'],
-  /** The two floating notes next to the phones (read as "87 photos safe in your cloud", "You freed 3.6 GB"). */
+  /** The two floating notes next to the phones. Same numbers as the demo: 72 photos + 15 videos saved, 3.5 GB in all. */
   chips: {
-    safe: { title: '87 photos safe', text: 'in your cloud' },
-    freed: { text: 'You freed', title: '3.6 GB' },
+    safe: { title: '87 photos and videos', text: 'safe in your cloud' },
+    freed: { text: 'You freed', title: '3.5 GB' },
   },
 };
 

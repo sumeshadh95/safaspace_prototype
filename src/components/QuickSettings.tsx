@@ -25,7 +25,7 @@ export function QuickSettings({ className = '' }: { className?: string }) {
           <span className={`flex h-9 w-9 items-center justify-center rounded-full ${dark ? 'bg-white/15' : 'bg-blue-soft text-blue'}`} aria-hidden>
             <Moon size={19} strokeWidth={2.4} />
           </span>
-          <span className={`rounded-full px-2.5 py-0.5 text-[15px] font-bold ${dark ? 'bg-white/20' : 'bg-card-2 text-ink-2'}`} aria-hidden>
+          <span className={`rounded-full px-2.5 py-0.5 text-[15px] font-bold ${dark ? 'bg-black/25' : 'bg-card-2 text-ink-2'}`} aria-hidden>
             {dark ? 'On' : 'Off'}
           </span>
         </span>
@@ -44,7 +44,7 @@ export function QuickSettings({ className = '' }: { className?: string }) {
           <span className={`flex h-9 w-9 items-center justify-center rounded-full ${powerSaving ? 'bg-white/15' : 'bg-green-soft text-green'}`} aria-hidden>
             <BatteryMedium size={20} strokeWidth={2.4} />
           </span>
-          <span className={`rounded-full px-2.5 py-0.5 text-[15px] font-bold ${powerSaving ? 'bg-white/20' : 'bg-card-2 text-ink-2'}`} aria-hidden>
+          <span className={`rounded-full px-2.5 py-0.5 text-[15px] font-bold ${powerSaving ? 'bg-black/25' : 'bg-card-2 text-ink-2'}`} aria-hidden>
             {powerSaving ? 'On' : 'Off'}
           </span>
         </span>

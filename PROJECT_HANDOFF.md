@@ -212,6 +212,7 @@ A small module that pretends to be a cloud server.
 - The scroll position resets to the top on route change.
 - Layout: `PhoneFrame` > `ActionsProvider` > `<main>` (the scrolling area) + `DemoPanel`.
 - `PhoneFrame` has `transform: translateZ(0)`, which makes `position: fixed` children (the preview) stick to the **frame** instead of the browser window in desktop mode.
+- On a short laptop/projector screen the whole drawn phone shrinks to fit (CSS `zoom`, worked out from the window size), so the 390×844 screen is never cut off and "Check my phone" is always visible.
 
 ---
 
