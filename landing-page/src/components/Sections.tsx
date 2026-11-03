@@ -4,7 +4,6 @@ import {
   BadgeAlert,
   BookOpenText,
   Check,
-  ChevronRight,
   CircleCheck,
   CloudCheck,
   CloudUpload,
@@ -22,6 +21,7 @@ import {
 import { PARTNER_MAILTO, PROTOTYPE_URL } from '../config';
 import { cta, features, finalCta, hero, howItWorks, organisations, problem, safety, showcase } from '../content';
 import { PhoneFrame } from './PhoneFrame';
+import { CheckArt, SaveArt, SortArt } from './StepArt';
 import { Container, DemoButton, Eyebrow, Reveal, SectionTitle, TILE } from './ui';
 
 const FEATURE_ICONS: Record<string, [LucideIcon, string]> = {
@@ -107,59 +107,74 @@ export function Problem() {
   );
 }
 
+// Each step gets its own colour and a small drawing of that part of the app.
+const STEP_LOOKS = [
+  { Art: CheckArt, panel: 'bg-[linear-gradient(160deg,#F2F6FC_0%,#E0EAF8_100%)]', tag: TILE.blue },
+  { Art: SortArt, panel: 'bg-[linear-gradient(160deg,#F1F8F3_0%,#DDEEE3_100%)]', tag: TILE.green },
+  { Art: SaveArt, panel: 'bg-[linear-gradient(160deg,#F6F3FB_0%,#E7E0F4_100%)]', tag: TILE.violet },
+];
+
 export function HowItWorks() {
   const last = howItWorks.steps.length - 1;
   return (
     <section id="how-it-works" aria-labelledby="how-title" className="border-y border-line bg-white py-24 sm:py-28">
-      <Container className="grid gap-14 lg:grid-cols-[minmax(250px,1fr)_2.7fr] lg:gap-16">
+      <Container>
         <Reveal>
-          <SectionTitle id="how-title" eyebrow={howItWorks.eyebrow} title={howItWorks.title} subtitle={howItWorks.subtitle} />
+          <SectionTitle id="how-title" eyebrow={howItWorks.eyebrow} title={howItWorks.title} subtitle={howItWorks.subtitle} center />
+        </Reveal>
+        <ol className="mt-14 grid gap-6 lg:grid-cols-3 lg:gap-8">
+          {howItWorks.steps.map((s, i) => {
+            const { Art, panel, tag } = STEP_LOOKS[i];
+            return (
+              <li key={s.title}>
+                <Reveal delay={i * 120} className="relative h-full">
+                  <div className="h-full rounded-[28px] bg-card p-3 shadow-[var(--shadow-card)] ring-1 ring-black/[0.04] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] sm:grid sm:grid-cols-2 sm:items-center lg:block">
+                    <div aria-hidden className={`relative flex h-[214px] items-center justify-center overflow-hidden rounded-[22px] ${panel}`}>
+                      <svg className="absolute -top-28 -right-28 h-[300px] w-[300px]" viewBox="0 0 300 300" fill="none">
+                        {[70, 110, 150].map((r) => (
+                          <circle key={r} cx="150" cy="150" r={r} stroke="#FFFFFF" strokeOpacity="0.7" strokeWidth="2" />
+                        ))}
+                      </svg>
+                      <Art />
+                    </div>
+                    <div className="px-4 pt-6 pb-4 sm:px-7 sm:py-4 lg:px-4 lg:pt-6 lg:pb-4">
+                      <h3 className="text-[22px] leading-snug font-bold text-ink">
+                        <span className={`mb-3 flex w-fit rounded-full px-3 py-1 text-[15px] ${tag}`}>
+                          Step {i + 1}
+                          <span className="sr-only">:</span>
+                        </span>{' '}
+                        {s.title}
+                      </h3>
+                      <p className="mt-2 text-[18px] leading-[1.6] text-ink-2">{s.text}</p>
+                    </div>
+                  </div>
+                  {/* desktop: a round arrow between the cards */}
+                  {i < last && (
+                    <span
+                      aria-hidden
+                      className="absolute top-[98px] -right-[38px] z-10 hidden h-11 w-11 items-center justify-center rounded-full bg-white text-blue shadow-[var(--shadow-float)] ring-1 ring-black/[0.05] lg:flex"
+                    >
+                      <ArrowRight size={21} strokeWidth={2.6} />
+                    </span>
+                  )}
+                </Reveal>
+              </li>
+            );
+          })}
+        </ol>
+        <Reveal className="mt-12 flex justify-center">
           <a
             href={PROTOTYPE_URL}
             target="_blank"
             rel="noopener"
             data-cta="demo"
-            className="group mt-7 inline-flex min-h-[48px] items-center gap-2 rounded-xl text-[20px] font-bold text-blue underline-offset-4 hover:underline"
+            className="group inline-flex min-h-[60px] items-center justify-center gap-2.5 rounded-2xl border-2 border-blue bg-white px-7 text-[20px] font-bold text-blue transition-colors hover:bg-blue-soft"
           >
             {howItWorks.tryLink}
             <ArrowRight size={22} strokeWidth={2.6} className="transition-transform group-hover:translate-x-1" aria-hidden />
             <span className="sr-only"> (opens the demo in a new tab)</span>
           </a>
         </Reveal>
-        <ol className="grid gap-10 md:grid-cols-3 md:gap-6">
-          {howItWorks.steps.map((s, i) => (
-            <li key={s.title} className="relative">
-              {/* mobile: a dashed line down to the next step */}
-              {i < last && <span aria-hidden className="absolute top-[72px] bottom-[-34px] left-[29px] border-l-2 border-dashed border-blue/25 md:hidden" />}
-              <Reveal delay={i * 120}>
-                <div className="flex items-center gap-5 md:gap-0">
-                  <span className="relative z-10 flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full bg-blue text-[24px] font-bold text-white shadow-[0_0_0_8px_#E6EEF9]" aria-hidden>
-                    {i + 1}
-                  </span>
-                  {/* desktop: dashed line with a chevron to the next step */}
-                  {i < last && (
-                    <span aria-hidden className="ml-5 hidden flex-1 items-center md:flex">
-                      <span className="h-0 flex-1 border-t-2 border-dashed border-blue/25" />
-                      <ChevronRight size={22} strokeWidth={2.6} className="mx-1 text-blue/60" />
-                      <span className="h-0 flex-1 border-t-2 border-dashed border-blue/25" />
-                    </span>
-                  )}
-                  <h3 className="text-[22px] font-bold text-ink md:hidden">
-                    <span className="sr-only">Step {i + 1}: </span>
-                    {s.title}
-                  </h3>
-                </div>
-                <div className="pl-[80px] md:pl-0">
-                  <h3 className="mt-7 hidden text-[22px] font-bold text-ink md:block">
-                    <span className="sr-only">Step {i + 1}: </span>
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-[18px] leading-[1.6] text-ink-2 md:mt-2">{s.text}</p>
-                </div>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
       </Container>
     </section>
   );

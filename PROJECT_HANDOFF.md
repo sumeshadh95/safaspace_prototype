@@ -383,6 +383,7 @@ node scripts/cloud-tabs.mjs         # two-tab live cloud check
   - `Header.tsx`: sticky; border appears on scroll; desktop nav; mobile hamburger panel whose links close the menu and then smooth-scroll
   - `Hero.tsx` + `LakeIllustration.tsx`: an SVG golden-hour lake. Uses `public/images/hero-lake.jpg` instead if it exists (build-time flag `__HERO_PHOTO__` defined in `vite.config.ts`)
   - `Sections.tsx`: Features, Problem, HowItWorks, Showcase, Safety, Organisations, FinalCta
+  - `StepArt.tsx`: the three decorative drawings in "How it works" (plain HTML + lucide icons, no images)
   - `Persona.tsx`: Robert, 72, labelled "Our user persona", with the line-art Mikkeli skyline SVG
   - `Faq.tsx`: an accordion using `aria-expanded`, `aria-controls` and a region
   - `Footer.tsx`
@@ -453,7 +454,7 @@ node scripts/cloud-tabs.mjs         # two-tab live cloud check
   - Eyebrow labels and subtitles (`content.ts`), and h2s at 34/44px.
   - Feature cards lift on hover.
   - "Sound familiar?" shows the worries as speech bubbles with tails.
-  - How it works: number circles with halos and dashed connectors with chevrons (a vertical dashed line on phones).
+  - How it works: three cards, each with a small drawing of that part of the app (`StepArt.tsx`: the phone with ripples and the "Check my phone" button; photos marked "Saved in cloud" / "Only on phone"; the save choices and the "You freed 3.5 GB" message with Undo), a coloured "Step N" label, and round arrows between the cards on desktop. "Try it yourself" sits under the cards.
   - The showcase is a soft blue stage with rings, the middle phone raised, and caption icons. On phones it is a scroll-snap carousel with dot buttons (IntersectionObserver on the scroller).
   - Safety: a round green glow behind the phone, an "Always asks first" note on the phone's corner, and the three promises as soft cards.
   - The organisations panel has a gradient and decorative rings.

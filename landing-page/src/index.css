@@ -110,6 +110,24 @@ body {
   animation-delay: -3s;
 }
 
+/* Calm ripples around the phone in "How it works", like the app's check screen */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+.ripple {
+  animation: ripple 3.2s ease-out infinite;
+}
+.ripple-delay {
+  animation-delay: -1.6s;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }
