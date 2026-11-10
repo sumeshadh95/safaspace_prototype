@@ -25,14 +25,31 @@
     <meta property="og:image:alt" content="SafeSpace: a phone showing which photos are safe in the cloud, over a calm lake landscape" />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <!-- Atkinson Hyperlegible is served from this site (public/fonts, SIL Open Font License) and
+         preloaded, so it is ready for the first paint and the text doesn't jump when it arrives. -->
+    <link rel="preload" href="%BASE_URL%fonts/atkinson-hyperlegible-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="%BASE_URL%fonts/atkinson-hyperlegible-700.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: 'Atkinson Hyperlegible';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('%BASE_URL%fonts/atkinson-hyperlegible-400.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Atkinson Hyperlegible';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url('%BASE_URL%fonts/atkinson-hyperlegible-700.woff2') format('woff2');
+      }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Fonts load without blocking the first paint. The handwriting font only loads the
-         letters of "Made in Mikkeli" (text=…), so it stays tiny. -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <!-- The handwriting font only loads the letters of "Made in Mikkeli" (text=…), so it stays tiny. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&text=Made%20in%20Mikkeli&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" />
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&text=Made%20in%20Mikkeli&display=swap" />
       <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
     </noscript>

@@ -3,7 +3,7 @@ import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Persona } from './components/Persona';
-import { Features, FinalCta, HowItWorks, Organisations, Problem, Safety, Showcase } from './components/Sections';
+import { Families, Features, FinalCta, HowItWorks, Organisations, Problem, Safety, Showcase } from './components/Sections';
 
 export default function App() {
   return (
@@ -18,11 +18,13 @@ export default function App() {
       <Header />
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
-        <Features />
+        {/* the worry first, then what SafeSpace does about it */}
         <Problem />
+        <Features />
         <HowItWorks />
         <Showcase />
         <Safety />
+        <Families />
         <Organisations />
         <Persona />
         <Faq />

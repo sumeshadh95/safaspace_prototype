@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Globe, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { nav } from '../content';
 import { Container, DemoButton, Logo } from './ui';
 
@@ -54,7 +54,7 @@ export function Header() {
       }`}
     >
       <Container className="flex h-[76px] items-center justify-between gap-2 !px-4 sm:!px-8">
-        <a href="#top" className="rounded-xl" aria-label="SafeSpace, back to top">
+        <a href="#top" className="flex min-h-[48px] items-center rounded-xl" aria-label="SafeSpace, back to top">
           <span className="hidden sm:block">
             <Logo />
           </span>
@@ -63,7 +63,8 @@ export function Header() {
           </span>
         </a>
 
-        <nav aria-label="Main" className="hidden lg:block">
+        {/* the full menu only where it fits on one line; narrower screens get the Menu button */}
+        <nav aria-label="Main" className="hidden xl:block">
           <ul className="flex items-center gap-1">
             {nav.map((item) => {
               const isActive = active === item.id;
@@ -72,7 +73,7 @@ export function Header() {
                   <a
                     href={`#${item.id}`}
                     aria-current={isActive ? 'true' : undefined}
-                    className={`relative flex min-h-[44px] items-center rounded-xl px-3 text-[17px] font-bold transition-colors hover:text-blue ${
+                    className={`relative flex min-h-[48px] items-center rounded-xl px-3 text-[17px] font-bold whitespace-nowrap transition-colors hover:text-blue ${
                       isActive ? 'text-blue' : 'text-ink-2'
                     }`}
                   >
@@ -88,26 +89,26 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-1 sm:gap-4">
-          <span className="hidden items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[14px] font-bold text-ink-2 sm:inline-flex">
-            <Globe size={15} strokeWidth={2.4} aria-hidden />
-            <span className="sr-only">Language: </span>EN
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* on phones the hero's big "Try the demo" is right below, so the bar keeps just the logo and Menu */}
+          <span className="hidden sm:block">
+            <DemoButton size="sm" className="!px-5" />
           </span>
-          <DemoButton size="sm" compact className="!px-3 !text-[15px] min-[400px]:!px-4 min-[400px]:!text-[17px] sm:!px-5" />
           <button
-            className="flex h-12 w-12 items-center justify-center rounded-xl text-ink hover:bg-blue-soft lg:hidden"
+            className="flex h-12 items-center gap-2 rounded-xl border-2 border-line bg-white px-3.5 text-[17px] font-bold text-ink hover:border-blue/30 hover:bg-blue-soft xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen((o) => !o)}
           >
-            {open ? <X size={28} strokeWidth={2.4} aria-hidden /> : <Menu size={28} strokeWidth={2.4} aria-hidden />}
+            {open ? <X size={24} strokeWidth={2.6} aria-hidden /> : <Menu size={24} strokeWidth={2.6} aria-hidden />}
+            {open ? 'Close' : 'Menu'}
           </button>
         </div>
       </Container>
 
       {open && (
-        <nav id="mobile-menu" aria-label="Main" className="border-t border-line bg-white lg:hidden">
+        <nav id="mobile-menu" aria-label="Main" className="border-t border-line bg-white xl:hidden">
           <ul className="flex flex-col px-4 pt-3 pb-2">
             {nav.map((item) => (
               <li key={item.id}>

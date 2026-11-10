@@ -24,7 +24,7 @@ export function Footer() {
           <ul className="mt-4 flex flex-col gap-1">
             {nav.map((item) => (
               <li key={item.id}>
-                <a href={`#${item.id}`} className="inline-flex min-h-[40px] items-center rounded-lg text-[17px] text-white/90 underline-offset-4 hover:text-white hover:underline">
+                <a href={`#${item.id}`} className="inline-flex min-h-[48px] min-w-[48px] items-center rounded-lg text-[17px] text-white/90 underline-offset-4 hover:text-white hover:underline">
                   {item.label}
                 </a>
               </li>
@@ -34,7 +34,7 @@ export function Footer() {
         <div>
           <h2 className="text-[15px] font-bold tracking-[0.08em] text-white/70 uppercase">{footer.contactTitle}</h2>
           <p className="mt-4 text-[17px] text-white/90">{footer.team}</p>
-          <a href={CONTACT_MAILTO} className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-lg text-[17px] font-bold text-white underline-offset-4 hover:underline">
+          <a href={CONTACT_MAILTO} className="mt-3 inline-flex min-h-[48px] items-center gap-2 rounded-lg text-[17px] font-bold text-white underline-offset-4 hover:underline">
             <Mail size={20} strokeWidth={2.2} aria-hidden />
             {footer.contact}
           </a>
@@ -43,7 +43,7 @@ export function Footer() {
       <div className="relative border-t border-white/10">
         <Container className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[15px] leading-[1.6] text-white/75">{footer.legal}</p>
-          <a href="#top" className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-lg text-[16px] font-bold text-white/90 hover:text-white">
+          <a href="#top" className="inline-flex min-h-[48px] shrink-0 items-center gap-2 rounded-lg text-[16px] font-bold text-white/90 hover:text-white">
             <ArrowUp size={18} strokeWidth={2.4} aria-hidden />
             {footer.backToTop}
           </a>

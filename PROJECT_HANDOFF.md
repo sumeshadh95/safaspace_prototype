@@ -220,7 +220,7 @@ A small module that pretends to be a cloud server.
 
 ### 1. Home (`HomeScreen.tsx`), matched to PDF page 1
 Logo (green shield tile + "SafeSpace") → a phone-with-shield illustration (custom inline SVG on a 148px light-blue circle) → time-based greeting "Good …, Robert" → "Your phone is almost full. Let's check your photos and files safely." → `StorageCard` → the "Check my phone" primary button (search icon) → "Nothing is deleted without asking you" (shield icon). A tiny grey **Demo** link sits in the bottom-right corner.
-- `StorageCard` shows the badge **"Almost full"** (orange) at 85% or more, otherwise **"Space OK"** (green with an icon). The bar is orange when full, green otherwise. It shows "61 GB of 64 GB used", which updates live.
+- `StorageCard` shows the badge **"Almost full"** (orange) only while less than 5 GB is free (`isAlmostFull`, also used for the Home greeting line), otherwise **"Space OK"** (green with an icon). The bar is orange when full, green otherwise. It shows "61 GB of 64 GB used", which updates live.
 
 ### 2. Scanning (`ScanningScreen.tsx`)
 A pulse animation of two expanding rings (no spinning), "Looking at your photos and files…", "Nothing will be deleted." and a progress bar. It moves on automatically after **3 s**.
@@ -320,7 +320,7 @@ Home (61 GB, "Almost full") → Check my phone → scanning → Results ("87 …
 
 ## 13. Known limitations and ideas for later
 - The greeting uses the presenter's local clock ("Good afternoon" during a daytime demo, not always "Good morning" as in the PDF).
-- Storage only drops by the display size of the mock files (about 6 GB in total), so "Space OK" (below 85%, i.e. under 54.4 GB) **cannot be reached** with the mock data alone. The badge logic exists but won't trigger in the demo.
+- Storage only drops by the display size of the mock files (about 6 GB in total), so "Space OK" appears once more than 5 GB is free (under 59 GB used), about 2 GB of removals in.
 - Only 3 base images are reused across 145 files, which is visually repetitive but intended.
 - Removed files are not shown in the category list (only in Bring back).
 - Changing the filter clears the current selection (a deliberate choice to avoid hidden selected items).
@@ -552,6 +552,16 @@ Testers could not tell the phone's power saving screens from SafeSpace, so the d
 - **Sound familiar?**: speech bubbles in soft orange/violet/blue, gently tilted on wider screens, with a large faint quote mark; the answer is now a card with a "See how it works" link (`problem.link`).
 - **Hero**: a hint under the buttons (`hero.demoHint`): "The demo opens on a phone's home screen. Tap the green SafeSpace icon to start."
 - The showcase carousel (`ul` "App screens") is keyboard-focusable (`tabIndex={0}`), so axe reports no issues at 390, 768 and 1280.
+
+### Landing page: seniors-first pass (design brief)
+- **Order**: Hero → Sound familiar? → Why SafeSpace → How it works → Inside the app → Safety → **For families** (new) → For organisations → Robert's story → FAQ → Final CTA → Footer.
+- **For families** (`Families` in `Sections.tsx`, `families` in `content.ts`, `#families`, warm cream background): "Helping a parent with their phone?", three tip cards (Try the demo together · Show them Undo · Let them lead), a "Try the demo together" button (`DemoButton` now takes a `label`), and a small drawn phone on its home screen with the SafeSpace icon pointed out ("Look for the green SafeSpace icon", anchored to the icon so it fits at every width).
+- **Header**: the full menu shows from 1280px (`xl`) so it never wraps; below that a bordered **Menu** button with a visible label (aria-label "Open menu"/"Close menu"). On phones (<640px) the bar holds only the logo and Menu (the hero's "Try the demo" is right below); the static "EN" pill was removed (it looked like a button but did nothing).
+- **Targets**: every link and button is at least 48×48 (header logo link, nav, footer links, carousel dots). Tagline text 14 → 15px. Hero top padding on phones 48 → 32px so "Try the demo" is in the first screen even at 320×700.
+- **FAQ**: added "Can my family help me get started?" and "Is my information private?" (the demo uses made-up photos; nothing from the visitor's phone is used or sent).
+- **Font**: Atkinson Hyperlegible is self-hosted in `public/fonts` (400 + 700 woff2 from @fontsource 5.3.0, OFL licence included) and preloaded in `index.html`; Caveat still comes from Google Fonts. This removed an intermittent layout shift of the hero landscape (Lighthouse CLS 0.44 → 0).
+- `scripts/check-site.mjs` clicks the first **visible** "Try the demo" link (the header one is hidden on phones).
+- Checked: axe clean at 320, 390, 640×450 (200% zoom), 768, 1024, 1366×768, 1366×657 and 1440; no sideways scroll; headline, explanation and "Try the demo" in the first screen at 390×844 and 1366×768. Lighthouse (mobile): accessibility, best practices and SEO 100; performance 77–79 (main remaining cost is hydrating the whole React page on a slow phone CPU).
 
 ### Tests
 - `scripts/journey.mjs` now also covers:

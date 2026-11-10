@@ -85,7 +85,7 @@ for (const [label, width, height] of [
   if (report.overflow > 0) problems.push(`[${label}] page scrolls sideways by ${report.overflow}px: ${report.wide.join(' | ')}`);
 
   // Clicking a demo button really opens the prototype in a new tab.
-  const [popup] = await Promise.all([page.context().waitForEvent('page'), page.locator('a[data-cta="demo"]').first().click()]);
+  const [popup] = await Promise.all([page.context().waitForEvent('page'), page.locator('a[data-cta="demo"]:visible').first().click()]);
   await popup.waitForLoadState('domcontentloaded').catch(() => {});
   console.log(`  demo button opened: ${popup.url()}`);
   if (!popup.url().startsWith(PROTOTYPE_URL)) problems.push(`[${label}] demo button opened ${popup.url()}`);

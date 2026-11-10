@@ -26,7 +26,7 @@ export function Hero() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(246,248,247,0),#F6F8F7)]" />
       </div>
 
-      <Container className="relative grid items-center gap-14 pt-12 pb-20 sm:pt-16 lg:min-h-[740px] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-6 lg:pt-12 lg:pb-24">
+      <Container className="relative grid items-center gap-14 pt-8 pb-20 sm:pt-16 lg:min-h-[740px] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-6 lg:pt-12 lg:pb-24">
         <div className="max-w-[620px]">
           <p className="flex items-start gap-3 text-[17px] leading-snug font-bold text-green">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-soft ring-1 ring-green/10" aria-hidden>

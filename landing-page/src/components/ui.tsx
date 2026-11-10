@@ -9,12 +9,15 @@ export function DemoButton({
   size = 'lg',
   tone = 'blue',
   compact = false,
+  label = cta.demo,
   className = '',
 }: {
   size?: 'sm' | 'lg';
   tone?: 'blue' | 'white';
   /** In the header: the arrow hides on very small screens so everything fits. */
   compact?: boolean;
+  /** Button text (default "Try the demo"). */
+  label?: string;
   className?: string;
 }) {
   const sizes = { sm: 'min-h-[48px] px-5 text-[17px]', lg: 'min-h-[60px] px-7 text-[20px]' };
@@ -30,7 +33,7 @@ export function DemoButton({
       data-cta="demo"
       className={`group inline-flex items-center justify-center gap-2.5 rounded-2xl font-bold whitespace-nowrap transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${sizes[size]} ${tones[tone]} ${className}`}
     >
-      {cta.demo}
+      {label}
       <ArrowRight
         size={size === 'lg' ? 22 : 19}
         strokeWidth={2.6}
@@ -71,7 +74,7 @@ export function Logo({ light = false, tagline = true, small = false }: { light?:
         <span className={`block ${small ? 'text-[18px] min-[400px]:text-[20px]' : 'text-[21px]'} font-bold tracking-[-0.01em] ${light ? 'text-white' : 'text-ink'}`}>
           {brand.name}
         </span>
-        {tagline && <span className={`block text-[14px] ${light ? 'text-white/75' : 'text-ink-2'}`}>{brand.tagline}</span>}
+        {tagline && <span className={`block text-[15px] ${light ? 'text-white/75' : 'text-ink-2'}`}>{brand.tagline}</span>}
       </span>
     </span>
   );

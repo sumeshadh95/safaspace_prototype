@@ -1,12 +1,14 @@
 import { CircleCheck, Smartphone } from 'lucide-react';
 import { trim } from '../lib/format';
 
-const ALMOST_FULL = 0.85;
+/** "Almost full" only while less than 5 GB is free. */
+const ALMOST_FULL_FREE_MB = 5_000;
+export const isAlmostFull = (usedMB: number, totalMB: number) => totalMB - usedMB < ALMOST_FULL_FREE_MB;
 
 /** "Phone space" with the bar and "61 GB of 64 GB used". */
 export function StorageCard({ usedMB, totalMB }: { usedMB: number; totalMB: number }) {
   const ratio = usedMB / totalMB;
-  const full = ratio >= ALMOST_FULL;
+  const full = isAlmostFull(usedMB, totalMB);
   return (
     <section className="rounded-[22px] bg-card p-[22px] shadow-[var(--shadow-card)]" aria-label="Phone space">
       <div className="flex items-center justify-between gap-3">

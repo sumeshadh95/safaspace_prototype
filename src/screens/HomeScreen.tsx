@@ -1,6 +1,6 @@
 import { Search, Shield, ShieldCheck } from 'lucide-react';
 import { QuickSettings } from '../components/QuickSettings';
-import { StorageCard } from '../components/StorageCard';
+import { StorageCard, isAlmostFull } from '../components/StorageCard';
 import { CloudLink, PrimaryButton } from '../components/ui';
 import { greeting } from '../lib/format';
 import { usePhone } from '../lib/usePhone';
@@ -47,7 +47,7 @@ export function PhoneIllustration({ pulse = false, size = 132 }: { pulse?: boole
 
 export function HomeScreen({ onCheck, onDemo }: { onCheck: () => void; onDemo: () => void }) {
   const { usedMB, totalMB } = usePhone();
-  const full = usedMB / totalMB >= 0.85;
+  const full = isAlmostFull(usedMB, totalMB);
 
   return (
     <div className="relative flex min-h-full flex-col px-6 pt-[max(20px,env(safe-area-inset-top))] pb-6">

@@ -187,6 +187,21 @@ export const stories = [
 
 export const madeIn = 'Made in Mikkeli';
 
+/** For the sons, daughters and grandchildren who help with phones. */
+export const families = {
+  eyebrow: 'For families',
+  title: 'Helping a parent with their phone?',
+  text: 'Try SafeSpace together once. After that they can use it on their own, and nothing is deleted without asking them first.',
+  tips: [
+    { icon: 'together', title: 'Try the demo together', text: 'Sit side by side and press “Check my phone”. It only takes a few taps.' },
+    { icon: 'undo', title: 'Show them Undo', text: 'Remove one photo, then tap Undo. Seeing it come back builds trust.' },
+    { icon: 'lead', title: 'Let them lead', text: 'Big buttons and plain words, so next time they can do it on their own.' },
+  ],
+  /** Note next to the small phone drawing. */
+  findIt: 'Look for the green SafeSpace icon',
+  cta: 'Try the demo together',
+} as const;
+
 export const faq = {
   eyebrow: 'FAQ',
   title: 'Questions and answers',
@@ -205,8 +220,16 @@ export const faq = {
       a: 'No. SafeSpace uses big buttons, plain words and one step at a time.',
     },
     {
+      q: 'Can my family help me get started?',
+      a: 'Yes. Try the demo together first. SafeSpace always asks before anything is deleted, so you stay in control.',
+    },
+    {
       q: 'Where are my photos saved?',
       a: 'In your cloud storage. SafeSpace shows you clearly which files are already saved there.',
+    },
+    {
+      q: 'Is my information private?',
+      a: 'This demo uses made-up photos, so nothing from your own phone is used or sent anywhere.',
     },
     {
       q: 'What does it cost?',

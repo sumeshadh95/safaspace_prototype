@@ -3,23 +3,32 @@ import {
   ArrowRight,
   BadgeAlert,
   BookOpenText,
+  CalendarDays,
+  Camera,
   Check,
   CloudCheck,
   CloudUpload,
+  Globe,
   Hand,
   Heart,
+  HeartHandshake,
+  Images,
   ListChecks,
+  MessageCircle,
   MessageCircleQuestion,
+  Phone,
   Presentation,
   Quote,
+  Settings,
   ShieldCheck,
   Smartphone,
+  ThumbsUp,
   Undo2,
   Users,
   type LucideIcon,
 } from 'lucide-react';
 import { PARTNER_MAILTO, PROTOTYPE_URL } from '../config';
-import { cta, features, finalCta, hero, howItWorks, organisations, problem, safety, showcase } from '../content';
+import { cta, families, features, finalCta, hero, howItWorks, organisations, problem, safety, showcase } from '../content';
 import { PhoneFrame } from './PhoneFrame';
 import { CheckArt, SaveArt, SortArt } from './StepArt';
 import { Container, DemoButton, Eyebrow, Reveal, SectionTitle, TILE } from './ui';
@@ -276,7 +285,7 @@ export function Showcase() {
                   onClick={() => goTo(i)}
                   aria-label={`Show screen ${i + 1} of ${count}`}
                   aria-current={current === i ? 'true' : undefined}
-                  className="flex h-11 w-11 items-center justify-center rounded-full"
+                  className="flex h-12 w-12 items-center justify-center rounded-full"
                 >
                   <span className={`block h-2.5 rounded-full transition-all duration-300 ${current === i ? 'w-7 bg-blue' : 'w-2.5 bg-blue/30'}`} />
                 </button>
@@ -333,6 +342,122 @@ export function Safety() {
         </div>
       </Container>
     </section>
+  );
+}
+
+const FAMILY_ICONS: Record<string, LucideIcon> = { together: HeartHandshake, undo: Undo2, lead: ThumbsUp };
+
+/** For the sons, daughters and grandchildren who help: three tips, and where to find the app. */
+export function Families() {
+  return (
+    <section id="families" aria-labelledby="families-title" className="relative overflow-hidden bg-[#FBF6EE] py-24 sm:py-28">
+      <Container className="grid items-center gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+        <div>
+          <Reveal>
+            <SectionTitle id="families-title" eyebrow={families.eyebrow} title={families.title} subtitle={families.text} tone="green" />
+          </Reveal>
+          <ol className="mt-10 flex flex-col gap-4">
+            {families.tips.map((t, i) => {
+              const Icon = FAMILY_ICONS[t.icon];
+              return (
+                <li key={t.title}>
+                  <Reveal delay={i * 90} className="flex items-start gap-5 rounded-[22px] bg-white p-5 shadow-[var(--shadow-card)] ring-1 ring-black/[0.03] sm:p-6">
+                    <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${TILE.orange}`} aria-hidden>
+                      <Icon size={24} strokeWidth={2.2} />
+                    </span>
+                    <div>
+                      <h3 className="text-[21px] leading-snug font-bold text-ink">{t.title}</h3>
+                      <p className="mt-1 text-[18px] leading-[1.6] text-ink-2">{t.text}</p>
+                    </div>
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
+          <Reveal className="mt-9">
+            <DemoButton label={families.cta} />
+          </Reveal>
+        </div>
+        <Reveal>
+          <FindSafeSpace />
+        </Reveal>
+      </Container>
+    </section>
+  );
+}
+
+// The phone's home screen in the demo: SafeSpace is the green icon among the usual apps.
+const HOME_APPS: { label: string; icon: LucideIcon; colors: [string, string]; safeSpace?: boolean }[] = [
+  { label: 'Calendar', icon: CalendarDays, colors: ['#5B8DEF', '#3563D6'] },
+  { label: 'Gallery', icon: Images, colors: ['#F06D8C', '#C9446A'] },
+  { label: 'Settings', icon: Settings, colors: ['#8A94A3', '#5E6875'] },
+  { label: 'SafeSpace', icon: ShieldCheck, colors: ['#2E8B5A', '#1E6B46'], safeSpace: true },
+];
+const HOME_DOCK: { label: string; icon: LucideIcon; colors: [string, string] }[] = [
+  { label: 'Phone', icon: Phone, colors: ['#4CC36F', '#2E9A52'] },
+  { label: 'Messages', icon: MessageCircle, colors: ['#5B8DEF', '#3563D6'] },
+  { label: 'Internet', icon: Globe, colors: ['#8E7CF0', '#5F4BD1'] },
+  { label: 'Camera', icon: Camera, colors: ['#F2706B', '#D64A45'] },
+];
+
+/** A small phone on its home screen with the SafeSpace icon pointed out (decorative). */
+function FindSafeSpace() {
+  return (
+    <div className="relative mx-auto w-fit py-6" aria-hidden>
+      <div className="absolute top-1/2 left-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,#F8E3C8_0%,rgba(248,227,200,0)_100%)]" />
+      <div className="relative w-[300px] rounded-[46px] bg-[linear-gradient(150deg,#4A5458_0%,#252C2F_30%,#15191B_70%)] p-[9px] shadow-[0_32px_64px_-24px_rgba(10,20,24,0.55)]">
+        <div
+          className="relative h-[500px] overflow-hidden rounded-[36px] text-white"
+          style={{
+            background:
+              'radial-gradient(120% 65% at 105% -5%, rgba(126,156,240,0.55) 0%, rgba(126,156,240,0) 60%), radial-gradient(95% 55% at -10% 105%, rgba(56,178,160,0.5) 0%, rgba(56,178,160,0) 62%), linear-gradient(172deg, #16264A 0%, #1F3B66 48%, #1A4658 100%)',
+          }}
+        >
+          <p className="px-6 pt-12 text-[56px] leading-none font-light tracking-[-0.02em]">9:30</p>
+          <p className="px-6 pt-2 text-[16px] text-white/85">Sunday</p>
+          <div className="absolute inset-x-0 bottom-0 px-3 pb-4">
+            <div className="grid grid-cols-4">
+              {HOME_APPS.map((app) => (
+                <MiniApp key={app.label} {...app} />
+              ))}
+            </div>
+            <div className="mt-4 grid grid-cols-4 rounded-[24px] bg-white/15 py-2.5">
+              {HOME_DOCK.map((app) => (
+                <MiniApp key={app.label} {...app} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MiniApp({ label, icon: Icon, colors, safeSpace = false }: { label: string; icon: LucideIcon; colors: [string, string]; safeSpace?: boolean }) {
+  return (
+    <span className="flex flex-col items-center gap-1.5">
+      <span className="relative">
+        {safeSpace && (
+          <>
+            <span className="ripple absolute -inset-1.5 rounded-[18px] border-2 border-white/80" />
+            {/* note above the icon, pointing down at it (it stays inside the screen at every width) */}
+            <span className="float absolute right-[-10px] bottom-[calc(100%+16px)] w-[178px] rounded-[16px] bg-white px-3.5 py-2.5 text-[15px] leading-snug font-bold text-ink shadow-[var(--shadow-float)]">
+              {families.findIt}
+              <svg className="absolute right-[22px] -bottom-[10px]" width="20" height="11" viewBox="0 0 20 11">
+                <path d="M0 0 H20 L13 11 Z" fill="#FFFFFF" />
+              </svg>
+            </span>
+          </>
+        )}
+        <span
+          className={`relative flex h-11 w-11 items-center justify-center rounded-[15px] ring-1 ring-white/15 ${safeSpace ? 'shadow-[0_0_0_4px_rgba(255,255,255,0.25)]' : ''}`}
+          style={{ background: `linear-gradient(160deg, ${colors[0]}, ${colors[1]})` }}
+        >
+          <Icon size={22} strokeWidth={2.1} />
+        </span>
+      </span>
+      <span className={`text-[12.5px] leading-none [text-shadow:0_1px_3px_rgba(0,0,0,0.6)] ${safeSpace ? 'font-bold' : ''}`}>{label}</span>
+    </span>
   );
 }
 
