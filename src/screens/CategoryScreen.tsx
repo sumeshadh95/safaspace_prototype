@@ -95,15 +95,15 @@ export function CategoryScreen({ type, title, onBack }: { type: FileType; title:
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-1 rounded-[20px] py-1">
+            {/* the words are part of the button, so tapping "Select all" works, not only the circle */}
+            <div className="py-1">
               <SelectCircle
                 selected={allSelected}
                 onToggle={() => setSelected(allSelected ? new Set() : new Set(visible.map((f) => f.id)))}
-                label={`Select all ${visible.length}`}
-              />
-              <span className="text-[18px] font-bold text-ink" aria-hidden>
-                Select all ({visible.length})
-              </span>
+                className="min-h-12 w-full gap-1 rounded-[18px] pr-4 text-left transition-colors hover:bg-ink/5"
+              >
+                <span className="text-[18px] font-bold text-ink">Select all ({visible.length})</span>
+              </SelectCircle>
             </div>
 
             {years.map(([year, files]) => (

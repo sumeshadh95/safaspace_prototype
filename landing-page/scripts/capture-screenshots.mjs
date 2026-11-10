@@ -42,7 +42,7 @@ const click = (locator, what) =>
 async function resetDemo() {
   await page.goto(URL);
   await page.evaluate(() => localStorage.clear());
-  await page.goto(URL);
+  await page.goto(`${URL}#/home`); // SafeSpace itself (the plain URL opens the phone's home screen)
   await page.evaluate(() => document.fonts.ready);
 }
 

@@ -31,6 +31,8 @@ export const hero = {
   message:
     'SafeSpace checks which photos, videos and documents are already safe in your cloud, then helps you clear space in a few simple taps — in plain words, and nothing is deleted without asking.',
   ticks: ['Nothing deleted without asking', 'Undo anytime', 'Large text, plain words'],
+  /** Under the buttons: the demo starts on a phone's home screen, not inside the app. */
+  demoHint: 'The demo opens on a phone’s home screen. Tap the green SafeSpace icon to start.',
   /** The two floating notes next to the phones. Same numbers as the demo: 72 photos + 15 videos saved, 3.5 GB in all. */
   chips: {
     safe: { title: '87 photos and videos', text: 'safe in your cloud' },
@@ -74,6 +76,7 @@ export const problem = {
     { icon: 'ads', text: 'Cleaner apps are confusing and full of ads.' },
   ],
   answer: 'SafeSpace was made for exactly this.',
+  link: 'See how it works',
 } as const;
 
 export const howItWorks = {

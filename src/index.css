@@ -9,6 +9,8 @@
  */
 @theme {
   --font-sans: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* The phone's own screens (home screen, power saving) use the phone's font, not SafeSpace's */
+  --font-system: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --color-bg: #f6f8f7;
   --color-card: #ffffff;
@@ -125,7 +127,8 @@ body {
   outline: 3px solid var(--color-blue);
   outline-offset: 3px;
 }
-.saver :focus-visible {
+.saver :focus-visible,
+.launcher :focus-visible {
   outline-color: #ffffff;
 }
 
@@ -215,6 +218,91 @@ body {
 }
 .flash {
   animation: flash 0.5s ease-out forwards;
+}
+
+/* ---- The phone itself: its home screen and the power saving takeover ---- */
+
+/* SafeSpace opening: it grows out of its icon on the phone's home screen */
+@keyframes app-open {
+  from {
+    transform: scale(0.14);
+    opacity: 0;
+    border-radius: 60px;
+  }
+  45% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+    border-radius: 0;
+  }
+}
+.app-open {
+  animation: app-open 0.42s cubic-bezier(0.2, 0.85, 0.25, 1) both;
+  overflow: hidden;
+}
+
+/* The screen that is closing shrinks and fades while power saving takes over */
+@keyframes app-close {
+  to {
+    transform: scale(0.86);
+    opacity: 0;
+    border-radius: 36px;
+  }
+}
+.app-close {
+  animation: app-close 0.7s 0.3s cubic-bezier(0.4, 0, 0.7, 1) both;
+  overflow: hidden;
+}
+
+/* Power saving takeover, 2.6 s in all (TAKEOVER in src/lib/system.ts): the phone's panel slides
+   down, the screen goes black (the mode switches at 1.1 s), then the new home screen appears. */
+@keyframes shade {
+  0% {
+    transform: translateY(-105%);
+  }
+  17%,
+  73% {
+    transform: translateY(0);
+  }
+  90%,
+  100% {
+    transform: translateY(-105%);
+  }
+}
+@keyframes takeover-dim {
+  0%,
+  10% {
+    opacity: 0;
+  }
+  42%,
+  77% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes takeover-fill {
+  0%,
+  15% {
+    width: 0;
+  }
+  60%,
+  100% {
+    width: 100%;
+  }
+}
+.shade {
+  animation: shade 2.6s cubic-bezier(0.25, 0.8, 0.25, 1) both;
+}
+.takeover-dim {
+  animation: takeover-dim 2.6s ease-in-out both;
+}
+.takeover-fill {
+  width: 100%;
+  animation: takeover-fill 2.6s ease-in-out both;
 }
 
 .scroll-area {

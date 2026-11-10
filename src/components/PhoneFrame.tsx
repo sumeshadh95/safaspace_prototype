@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { StatusBar } from './StatusBar';
+import { StatusBar, type StatusTone } from './StatusBar';
 
 // The drawn phone is 412 × 866 px (a 390 × 844 screen inside an 11px edge), with 24px of room around it.
 // On a short laptop or projector screen the whole phone shrinks to fit, so its screen is never cut off.
@@ -28,8 +28,22 @@ function useFitScale() {
  * Full screen on a phone. On a laptop/projector the app sits inside a phone drawn in CSS
  * (graphite body, side buttons, status bar with a small camera), like the landing page phones.
  * The app area has a transform so `position: fixed` overlays stay inside the phone screen.
+ * `fullBleed` lets the home screen wallpaper run behind the status bar; `overlay` (the phone's
+ * power saving panel) covers everything, status bar included.
  */
-export function PhoneFrame({ saver = false, powerSaving = false, children }: { saver?: boolean; powerSaving?: boolean; children: ReactNode }) {
+export function PhoneFrame({
+  bar = 'app',
+  fullBleed = false,
+  powerSaving = false,
+  overlay,
+  children,
+}: {
+  bar?: StatusTone;
+  fullBleed?: boolean;
+  powerSaving?: boolean;
+  overlay?: ReactNode;
+  children: ReactNode;
+}) {
   const scale = useFitScale();
 
   return (
@@ -44,8 +58,9 @@ export function PhoneFrame({ saver = false, powerSaving = false, children }: { s
         <span aria-hidden className="absolute top-[21%] -right-[3px] hidden h-[9%] w-1 rounded-r-[3px] bg-[linear-gradient(270deg,#3A4246,#1A1F21)] sm:block" />
 
         <div className="relative h-full w-full overflow-hidden bg-bg transition-colors duration-300 sm:h-[844px] sm:w-[390px] sm:rounded-[47px] sm:shadow-[0_0_0_1px_rgba(0,0,0,0.6)]">
-          <StatusBar saver={saver} powerSaving={powerSaving} />
-          <div className="absolute inset-x-0 top-0 bottom-0 overflow-hidden [transform:translateZ(0)] sm:top-[36px]">{children}</div>
+          <StatusBar tone={bar} powerSaving={powerSaving} />
+          <div className={`absolute inset-x-0 top-0 bottom-0 overflow-hidden [transform:translateZ(0)] ${fullBleed ? '' : 'sm:top-[36px]'}`}>{children}</div>
+          {overlay}
         </div>
       </div>
     </div>

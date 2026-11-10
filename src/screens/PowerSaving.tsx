@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { FILES } from '../data/files';
 import { formatDate } from '../lib/format';
-import { BATTERY, setPowerSaving } from '../lib/settings';
+import { BATTERY } from '../lib/settings';
 import { usePhone } from '../lib/usePhone';
 import { clockText, dayText, useNow } from '../lib/useNow';
 
@@ -50,7 +50,8 @@ const MESSAGES = [
 const SOFT = 'text-[#C3CDCF]';
 const TILE = 'border border-[#252C2F] bg-[#111516]';
 
-export function PowerSaving({ view, onOpen }: { view: SaverView; onOpen: (view: SaverView) => void }) {
+/** The phone's power saving mode (not SafeSpace), so it uses the phone's font. */
+export function PowerSaving({ view, onOpen, onTurnOff }: { view: SaverView; onOpen: (view: SaverView) => void; onTurnOff: () => void }) {
   const [calling, setCalling] = useState<string | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const back = () => onOpen('home');
@@ -60,8 +61,8 @@ export function PowerSaving({ view, onOpen }: { view: SaverView; onOpen: (view: 
   }, [view]);
 
   return (
-    <div ref={scroller} className="saver fade-in-slow scroll-area absolute inset-0 overflow-y-auto bg-black text-white">
-      {view === 'home' && <SaverHome onOpen={onOpen} />}
+    <div ref={scroller} className="saver font-system fade-in-slow scroll-area absolute inset-0 overflow-y-auto bg-black text-white">
+      {view === 'home' && <SaverHome onOpen={onOpen} onTurnOff={onTurnOff} />}
       {view === 'phone' && <PhoneApp onBack={back} onCall={setCalling} />}
       {view === 'contacts' && <ContactsApp onBack={back} onCall={setCalling} />}
       {view === 'messages' && <MessagesApp onBack={back} />}
@@ -72,7 +73,7 @@ export function PowerSaving({ view, onOpen }: { view: SaverView; onOpen: (view: 
   );
 }
 
-function SaverHome({ onOpen }: { onOpen: (view: SaverView) => void }) {
+function SaverHome({ onOpen, onTurnOff }: { onOpen: (view: SaverView) => void; onTurnOff: () => void }) {
   const now = useNow();
   return (
     <div className="flex min-h-full flex-col px-5 pt-5 pb-6">
@@ -111,7 +112,7 @@ function SaverHome({ onOpen }: { onOpen: (view: SaverView) => void }) {
 
       <div className="min-h-6 flex-1" />
       <button
-        onClick={() => setPowerSaving(false)}
+        onClick={onTurnOff}
         className="mt-6 flex h-16 w-full items-center justify-center gap-3 rounded-[20px] border-2 border-[#3A4447] bg-[#121718] text-[20px] font-bold hover:bg-[#1A2022]"
       >
         <Power size={24} strokeWidth={2.4} aria-hidden />
@@ -339,7 +340,7 @@ function CallScreen({ who, onEnd }: { who: string; onEnd: () => void }) {
 /** Thin black bar shown while SafeSpace is open in power saving mode. */
 export function SaverBanner({ onHome }: { onHome: () => void }) {
   return (
-    <div className="saver absolute inset-x-0 top-0 z-30 flex h-[60px] items-center justify-between bg-black px-4 text-white">
+    <div className="saver font-system absolute inset-x-0 top-0 z-30 flex h-[60px] items-center justify-between bg-black px-4 text-white">
       <span className="flex items-center gap-2 text-[16px] font-bold text-[#8AD8AB]">
         <BatteryMedium size={20} strokeWidth={2.4} aria-hidden />
         Power saving is on

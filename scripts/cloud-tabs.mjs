@@ -23,7 +23,7 @@ const filesInCloud = async () =>
 await app.goto(URL);
 await app.evaluate(() => localStorage.clear());
 // The buttons in the app open the cloud in a new tab.
-for (const [route, label] of [['#/', 'My cloud'], ['#/results', 'See my cloud']]) {
+for (const [route, label] of [['#/home', 'My cloud'], ['#/results', 'See my cloud']]) {
   await app.goto(URL + route);
   const [popup] = await Promise.all([context.waitForEvent('page'), app.getByRole('link', { name: label }).click()]);
   await popup.getByText('Robert’s cloud').waitFor();

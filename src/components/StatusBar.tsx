@@ -1,18 +1,25 @@
 import { BATTERY } from '../lib/settings';
 import { clockText, useNow } from '../lib/useNow';
 
+/** `app`: SafeSpace's colours · `black`: power saving · `clear`: over the home screen wallpaper. */
+export type StatusTone = 'app' | 'black' | 'clear';
+
+const TONES: Record<StatusTone, string> = {
+  app: 'bg-bg text-ink',
+  black: 'bg-black text-white',
+  clear: 'bg-transparent text-white',
+};
+
 /**
  * The phone's status bar (time, camera, signal, battery). Only drawn inside the laptop/projector
  * phone frame; on a real phone the phone's own status bar is already there.
  */
-export function StatusBar({ saver, powerSaving }: { saver: boolean; powerSaving: boolean }) {
+export function StatusBar({ tone, powerSaving }: { tone: StatusTone; powerSaving: boolean }) {
   const now = useNow();
   return (
     <div
       aria-hidden
-      className={`absolute inset-x-0 top-0 z-50 hidden h-[36px] items-center justify-between px-8 text-[14px] font-bold transition-colors duration-300 sm:flex ${
-        saver ? 'bg-black text-white' : 'bg-bg text-ink'
-      }`}
+      className={`font-system absolute inset-x-0 top-0 z-50 hidden h-[36px] items-center justify-between px-8 text-[14px] font-medium transition-colors duration-300 sm:flex ${TONES[tone]}`}
     >
       <span className="tabular-nums">{clockText(now)}</span>
       <span className="absolute top-1/2 left-1/2 h-[11px] w-[11px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_35%,#55687A_0%,#1C252C_32%,#050708_70%)] shadow-[0_0_0_1.5px_rgba(0,0,0,0.25)]" />

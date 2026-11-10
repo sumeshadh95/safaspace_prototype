@@ -33,12 +33,25 @@ const expectText = async (text) => {
   await page.getByText(text, { exact: false }).first().waitFor({ timeout: 6000 });
 };
 const storageText = () => page.locator('main').getByText(/GB of 64 GB used/).first().textContent();
+const HOME = URL + '#/home'; // SafeSpace's own home (no hash is the phone's home screen)
+// Power saving is the phone's mode: switching it plays a ~2.6 s takeover. Wait until it is over.
+const takeoverDone = () => page.locator('[data-takeover]').waitFor({ state: 'detached', timeout: 8000 });
+const quickShot = (name) => page.screenshot({ path: `${OUT}/${String(++n).padStart(2, '0')}-${name}.png` });
 
-// Start clean
+// Start clean, on the phone's own home screen
 await page.goto(URL);
 await page.evaluate(() => localStorage.clear());
 await page.goto(URL);
 await page.evaluate(() => document.fonts.ready);
+
+step('Phone home screen: other apps only show a note, SafeSpace opens');
+const safeSpaceIcon = page.getByRole('button', { name: 'SafeSpace', exact: true });
+await safeSpaceIcon.waitFor();
+await shot('phone-home');
+await page.getByRole('button', { name: 'Gallery' }).click();
+await expectText('Only SafeSpace works in this demo');
+await shot('phone-home-note');
+await safeSpaceIcon.click();
 
 step('Home');
 await expectText('61 GB of 64 GB used');
@@ -146,13 +159,14 @@ console.log('  cloud entries after refresh:', cloudCount);
 if (cloudCount !== 102) throw new Error(`expected 102 files in cloud, got ${cloudCount}`);
 await shot('after-refresh');
 
-step('Home storage dropped, then Reset demo');
-await page.goto(URL);
+step('Home storage dropped, then Reset demo (back to the phone home screen)');
+await page.goto(HOME);
 console.log('  storage now:', await storageText());
 await page.getByRole('button', { name: 'Demo' }).click();
 await page.getByRole('button', { name: 'Show cloud contents' }).click();
 await shot('demo-panel');
 await page.getByRole('button', { name: 'Reset demo' }).click();
+await safeSpaceIcon.click();
 await expectText('61 GB of 64 GB used');
 await page.getByRole('button', { name: 'Check my phone' }).click();
 await expectText('87 photos and videos are safe in your cloud');
@@ -161,7 +175,7 @@ await expectText('72 of 120 saved in cloud');
 const themeNow = () => page.evaluate(() => document.documentElement.dataset.theme);
 
 step('Dark mode');
-await page.goto(URL);
+await page.goto(HOME);
 await page.getByRole('switch', { name: 'Dark mode' }).click();
 if ((await themeNow()) !== 'dark') throw new Error('dark mode did not turn on');
 await shot('home-dark');
@@ -174,15 +188,19 @@ await shot('photos-dark');
 await page.reload();
 if ((await themeNow()) !== 'dark') throw new Error('dark mode was not kept after a refresh');
 console.log('  dark mode kept after refresh');
-await page.goto(URL);
+await page.goto(HOME);
 await page.getByRole('switch', { name: 'Dark mode' }).click();
 if ((await themeNow()) !== 'light') throw new Error('dark mode did not turn off');
 
-step('Power saving');
+step('Power saving: the phone takes over and SafeSpace closes');
 await page.getByRole('button', { name: /^Power saving/ }).click();
 await expectText('Turn on power saving?');
 await shot('power-saving-sheet');
 await page.getByRole('button', { name: 'Turn on power saving' }).click();
+await expectText('SafeSpace will close');
+await quickShot('power-saving-takeover');
+await expectText('Power saving is on');
+await takeoverDone();
 await expectText('Turn off power saving');
 await shot('power-saving-home');
 
@@ -216,27 +234,44 @@ for (const app of ['Messages', 'Camera', 'Photos']) {
 await page.getByRole('button', { name: 'SafeSpace', exact: true }).click();
 await expectText('Power saving is on');
 if ((await themeNow()) !== 'dark') throw new Error('SafeSpace should be dark in power saving');
+const darkSwitch = page.getByRole('switch', { name: 'Dark mode' });
+if ((await darkSwitch.getAttribute('aria-disabled')) !== 'true') throw new Error('Dark mode should be greyed out in power saving');
+await darkSwitch.click({ force: true }); // a tap does nothing
+if ((await themeNow()) !== 'dark') throw new Error('Dark mode should not change in power saving');
+await expectText('Not available in power saving');
+console.log('  dark mode is greyed out (crossed-out moon) and cannot be changed in power saving');
 await shot('saver-safespace');
 await page.getByRole('button', { name: 'Simple home' }).click();
 await page.reload();
 await expectText('Turn off power saving');
 console.log('  power saving kept after refresh');
 await page.getByRole('button', { name: 'Turn off power saving' }).click();
-await expectText('Check my phone');
+await expectText('Turning off');
+await takeoverDone();
+await safeSpaceIcon.waitFor();
+console.log('  turning power saving off goes back to the phone home screen');
 if ((await themeNow()) !== 'light') throw new Error('theme should be light again after power saving');
 
 step('Desktop frame');
 await page.setViewportSize({ width: 1280, height: 900 });
 await page.goto(URL);
+await safeSpaceIcon.waitFor();
+await shot('desktop-frame-phone-home');
+await page.goto(HOME);
 await shot('desktop-frame');
 await page.getByRole('switch', { name: 'Dark mode' }).click();
 await shot('desktop-frame-dark');
 await page.getByRole('switch', { name: 'Dark mode' }).click();
 await page.getByRole('button', { name: /^Power saving/ }).click();
 await page.getByRole('button', { name: 'Turn on power saving' }).click();
+await page.waitForTimeout(1300);
+await quickShot('desktop-frame-takeover');
+await takeoverDone();
 await expectText('Turn off power saving');
 await shot('desktop-frame-saver');
 await page.getByRole('button', { name: 'Turn off power saving' }).click();
+await takeoverDone();
+await safeSpaceIcon.waitFor();
 
 await browser.close();
 if (errors.length) {

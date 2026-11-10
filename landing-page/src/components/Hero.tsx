@@ -43,7 +43,16 @@ export function Hero() {
             <DemoButton />
             <HowItWorksButton />
           </div>
-          <ul className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-7">
+          <p className="mt-5 flex items-center gap-3 text-[17px] leading-snug text-ink-2">
+            <span
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-[linear-gradient(160deg,#2E8B5A,#1E6B46)] text-white shadow-[0_4px_10px_-4px_rgba(30,107,70,0.7)]"
+              aria-hidden
+            >
+              <ShieldCheck size={17} strokeWidth={2.4} />
+            </span>
+            {hero.demoHint}
+          </p>
+          <ul className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-7">
             {hero.ticks.map((t) => (
               <li key={t} className="flex items-center gap-2.5 text-[18px] font-bold text-ink">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green text-white shadow-[0_4px_10px_-4px_rgba(30,107,70,0.7)]" aria-hidden>

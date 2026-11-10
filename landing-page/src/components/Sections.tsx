@@ -4,7 +4,6 @@ import {
   BadgeAlert,
   BookOpenText,
   Check,
-  CircleCheck,
   CloudCheck,
   CloudUpload,
   Hand,
@@ -12,6 +11,7 @@ import {
   ListChecks,
   MessageCircleQuestion,
   Presentation,
+  Quote,
   ShieldCheck,
   Smartphone,
   Undo2,
@@ -24,11 +24,12 @@ import { PhoneFrame } from './PhoneFrame';
 import { CheckArt, SaveArt, SortArt } from './StepArt';
 import { Container, DemoButton, Eyebrow, Reveal, SectionTitle, TILE } from './ui';
 
-const FEATURE_ICONS: Record<string, [LucideIcon, string]> = {
-  cloud: [CloudCheck, TILE.blue],
-  shield: [ShieldCheck, TILE.green],
-  undo: [Undo2, TILE.violet],
-  people: [Users, TILE.orange],
+// Each benefit gets its own colour: a gradient icon, a colour line along the top and a large faint icon.
+const FEATURE_LOOKS: Record<string, { icon: LucideIcon; from: string; to: string }> = {
+  cloud: { icon: CloudCheck, from: '#5A85E6', to: '#2448A8' },
+  shield: { icon: ShieldCheck, from: '#43A873', to: '#1E6B46' },
+  undo: { icon: Undo2, from: '#8E74DB', to: '#5B3FA0' },
+  people: { icon: Users, from: '#EFA052', to: '#B35F17' },
 };
 
 export function Features() {
@@ -40,16 +41,28 @@ export function Features() {
         </Reveal>
         <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.items.map((f, i) => {
-            const [Icon, tile] = FEATURE_ICONS[f.icon];
+            const { icon: Icon, from, to } = FEATURE_LOOKS[f.icon];
             return (
               <li key={f.title}>
                 <Reveal delay={i * 80} className="h-full">
-                  <div className="h-full rounded-[22px] bg-card p-7 shadow-[var(--shadow-card)] ring-1 ring-black/[0.03] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
-                    <span className={`flex h-14 w-14 items-center justify-center rounded-2xl ${tile}`} aria-hidden>
-                      <Icon size={28} strokeWidth={2.2} />
+                  <div className="group relative h-full overflow-hidden rounded-[24px] bg-card p-7 pt-8 shadow-[var(--shadow-card)] ring-1 ring-black/[0.04] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-1.5" style={{ background: `linear-gradient(90deg, ${from}, ${to})` }} />
+                    <Icon
+                      aria-hidden
+                      size={150}
+                      strokeWidth={1.4}
+                      className="pointer-events-none absolute -right-9 -bottom-9 opacity-[0.07] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6"
+                      style={{ color: to }}
+                    />
+                    <span
+                      aria-hidden
+                      className="relative flex h-16 w-16 items-center justify-center rounded-[20px] text-white"
+                      style={{ background: `linear-gradient(150deg, ${from}, ${to})`, boxShadow: `0 14px 26px -12px ${to}` }}
+                    >
+                      <Icon size={30} strokeWidth={2.2} />
                     </span>
-                    <h3 className="mt-6 text-[22px] leading-snug font-bold text-ink">{f.title}</h3>
-                    <p className="mt-2 text-[18px] leading-[1.6] text-ink-2">{f.text}</p>
+                    <h3 className="relative mt-6 text-[22px] leading-snug font-bold text-ink">{f.title}</h3>
+                    <p className="relative mt-2 text-[18px] leading-[1.6] text-ink-2">{f.text}</p>
                   </div>
                 </Reveal>
               </li>
@@ -61,13 +74,14 @@ export function Features() {
   );
 }
 
-const PROBLEM_ICONS: Record<string, [LucideIcon, string]> = {
-  full: [Smartphone, TILE.orange],
-  heart: [Heart, TILE.violet],
-  ads: [BadgeAlert, TILE.blue],
+// Each worry is a speech bubble in its own soft colour, gently tilted like notes pinned to a board.
+const PROBLEM_LOOKS: Record<string, { icon: LucideIcon; bubble: string; ink: string; tilt: string }> = {
+  full: { icon: Smartphone, bubble: '#FBEEDD', ink: 'text-orange-ink', tilt: 'md:-rotate-[1.5deg]' },
+  heart: { icon: Heart, bubble: '#EFE9F8', ink: 'text-violet', tilt: 'md:translate-y-3 md:rotate-[1deg]' },
+  ads: { icon: BadgeAlert, bubble: '#E6EEF9', ink: 'text-blue', tilt: 'md:-rotate-[0.75deg]' },
 };
 
-/** Plain-language worries, shown as speech bubbles. */
+/** Plain-language worries, shown as speech bubbles, then the answer with a way to see how. */
 export function Problem() {
   return (
     <section aria-labelledby="problem-title" className="relative overflow-hidden bg-[#EDF2EF] py-24">
@@ -75,20 +89,24 @@ export function Problem() {
         <Reveal>
           <SectionTitle id="problem-title" title={problem.title} center />
         </Reveal>
-        <ul className="mt-14 grid gap-10 md:grid-cols-3 md:gap-6">
+        <ul className="mt-14 grid gap-10 md:grid-cols-3 md:gap-7">
           {problem.items.map((p, i) => {
-            const [Icon, tile] = PROBLEM_ICONS[p.icon];
+            const { icon: Icon, bubble, ink, tilt } = PROBLEM_LOOKS[p.icon];
             return (
               <li key={p.text}>
                 <Reveal delay={i * 100} className="h-full">
-                  <div className="relative h-full rounded-[24px] rounded-bl-[6px] bg-card p-7 shadow-[var(--shadow-card)]">
-                    <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${tile}`} aria-hidden>
-                      <Icon size={22} strokeWidth={2.2} />
+                  <div
+                    className={`relative h-full rounded-[26px] rounded-bl-[6px] p-7 shadow-[var(--shadow-card)] ring-1 ring-black/[0.04] transition-[rotate,translate] duration-300 hover:rotate-0 ${tilt}`}
+                    style={{ background: bubble }}
+                  >
+                    <Quote aria-hidden size={64} strokeWidth={0} fill="currentColor" className={`absolute top-4 right-5 opacity-[0.13] ${ink}`} />
+                    <span className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-[0_6px_14px_-8px_rgba(23,38,42,0.4)] ${ink}`} aria-hidden>
+                      <Icon size={24} strokeWidth={2.2} />
                     </span>
-                    <p className="mt-4 text-[21px] leading-snug text-pretty text-ink">“{p.text}”</p>
+                    <p className="relative mt-5 text-[22px] leading-snug text-pretty text-ink">“{p.text}”</p>
                     {/* bubble tail */}
                     <svg aria-hidden className="absolute -bottom-[13px] left-0" width="26" height="14" viewBox="0 0 26 14">
-                      <path d="M0 0 H26 C18 2 8 7 0 14 Z" fill="#FFFFFF" />
+                      <path d="M0 0 H26 C18 2 8 7 0 14 Z" fill={bubble} />
                     </svg>
                   </div>
                 </Reveal>
@@ -97,10 +115,19 @@ export function Problem() {
           })}
         </ul>
         <Reveal>
-          <p className="mx-auto mt-16 w-fit max-w-full rounded-[20px] bg-green-soft px-6 py-3.5 text-center text-[21px] font-bold text-green ring-1 ring-green/15">
-            <CircleCheck size={26} strokeWidth={2.4} className="mr-2.5 inline align-[-6px]" aria-hidden />
-            {problem.answer}
-          </p>
+          <div className="mx-auto mt-16 flex w-fit max-w-full flex-col items-center gap-4 rounded-[26px] bg-card px-6 py-6 text-center shadow-[var(--shadow-card)] ring-1 ring-green/15 sm:flex-row sm:gap-5 sm:py-4 sm:pr-4 sm:pl-5 sm:text-left">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green text-white shadow-[0_6px_14px_-6px_rgba(30,107,70,0.8)]" aria-hidden>
+              <Check size={26} strokeWidth={3} />
+            </span>
+            <p className="text-[22px] leading-snug font-bold text-balance text-ink">{problem.answer}</p>
+            <a
+              href="#how-it-works"
+              className="group inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-2xl bg-green-soft px-5 text-[18px] font-bold text-green transition-colors hover:bg-[#D3E9DC]"
+            >
+              {problem.link}
+              <ArrowRight size={20} strokeWidth={2.6} className="transition-transform group-hover:translate-x-1" aria-hidden />
+            </a>
+          </div>
         </Reveal>
       </Container>
     </section>
@@ -223,6 +250,7 @@ export function Showcase() {
             <ul
               ref={scroller}
               aria-label="App screens"
+              tabIndex={0}
               className="no-scrollbar relative flex snap-x snap-mandatory gap-6 overflow-x-auto px-[calc(50%-125px)] pt-2 pb-4 lg:justify-center lg:gap-14 lg:overflow-visible lg:px-0"
             >
               {showcase.items.map((item, i) => {

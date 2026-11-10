@@ -11,17 +11,23 @@ npm run dev
 
 Open **http://localhost:5288**. The app uses port 5288 because 5173 is taken by another program on the demo laptop. If 5288 is ever busy, Vite picks the next free port and prints it. `npm run dev` and `npm run build` first run `npm run seed`, which builds the mock "phone" (see below).
 
+## The phone's home screen
+
+The demo starts on the phone's own home screen (Android style: clock, app icons, dock), not inside SafeSpace. Tap **SafeSpace** to open it; it grows out of its icon like an Android app. The other icons only show a short note ("Only SafeSpace works in this demo"). SafeSpace itself is at `#/home`; the browser's Back button returns to the phone's home screen.
+
+The phone's own screens (home screen, power saving, its panel) use the phone's font (Roboto), and SafeSpace uses Atkinson Hyperlegible, so the two look different.
+
 ## Dark mode and power saving
 
 Two buttons at the top of Home:
 
-- **Dark mode**: switches the whole app between light and dark. The choice is remembered after a refresh.
-- **Power saving**: asks first, then shows a true-black home screen with only the most important apps as big tiles: Phone, Messages, Contacts, Camera, Photos and SafeSpace.
+- **Dark mode**: switches the whole app between light and dark. The choice is remembered after a refresh. While power saving is on it can't be used: it turns grey with a crossed-out moon and says "Not available in power saving" (on Results, tapping the grey pill explains why).
+- **Power saving**: this is the phone's mode, not SafeSpace's. It asks first, then the phone takes over: its panel slides down from the top ("Power saving mode · Turning on…"), SafeSpace shrinks away as the screen goes dark, and the phone shows a true-black home screen with only the most important apps as big tiles: Phone, Messages, Contacts, Camera, Photos and SafeSpace.
   - **Phone** has a big keypad, and **Contacts** has one-tap calling. Both show a "Calling…" screen that clearly says no real call is made.
   - **Camera** is demo-only.
   - **Photos** shows the newest photos from the mock phone.
   - **SafeSpace** opens the app in dark mode, with a black bar and a **Simple home** button to go back.
-  - **Turn off power saving** returns to normal.
+  - **Turn off power saving** plays the same panel ("Turning off…") and returns to the phone's normal home screen.
 
 On a laptop or projector, the app sits in a drawn phone with a status bar (time, battery). In power saving the status bar turns black and the battery shows green.
 
@@ -29,7 +35,7 @@ On a laptop or projector, the app sits in a drawn phone with a status bar (time,
 
 On the Home screen, tap the small grey **Demo** link at the bottom right:
 
-- **Reset demo**: clears the saved cloud state and goes back to the starting numbers (61 GB used, 72/15/12 saved), light mode and power saving off.
+- **Reset demo**: clears the saved cloud state and goes back to the starting numbers (61 GB used, 72/15/12 saved), light mode and power saving off, and returns to the phone's home screen, ready for the next tester.
 - **Show cloud contents**: shows a table of everything saved in the "cloud", which proves to the audience that uploads really happened.
 
 ## Show the cloud in a second tab

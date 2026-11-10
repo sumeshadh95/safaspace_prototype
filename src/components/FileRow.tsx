@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Check, CloudUpload, Trash2 } from 'lucide-react';
 import type { PhoneFile } from '../data/files';
 import { formatDate, formatSize } from '../lib/format';
@@ -13,22 +14,36 @@ interface Props {
   onDelete: () => void;
 }
 
-export function SelectCircle({ selected, onToggle, label }: { selected: boolean; onToggle: () => void; label: string }) {
+/**
+ * Round tick box. The whole button is the tap target, not just the circle: on a file row it is the
+ * full-height strip on the left, and "Select all" wraps its words (`children`), so tapping them works too.
+ */
+export function SelectCircle({
+  selected,
+  onToggle,
+  label,
+  children,
+  className = 'h-12 w-12 justify-center rounded-full',
+}: {
+  selected: boolean;
+  onToggle: () => void;
+  /** Needed when there are no visible words inside. */
+  label?: string;
+  children?: ReactNode;
+  className?: string;
+}) {
   return (
-    <button
-      role="checkbox"
-      aria-checked={selected}
-      aria-label={label}
-      onClick={onToggle}
-      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
-    >
-      <span
-        className={`flex h-7 w-7 items-center justify-center rounded-full border-[2.5px] transition-colors ${
-          selected ? 'border-primary bg-primary text-white' : 'border-muted bg-card'
-        }`}
-      >
-        {selected && <Check size={18} strokeWidth={3.4} aria-hidden />}
+    <button role="checkbox" aria-checked={selected} aria-label={label} onClick={onToggle} className={`flex shrink-0 items-center ${className}`}>
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center">
+        <span
+          className={`flex h-7 w-7 items-center justify-center rounded-full border-[2.5px] transition-colors ${
+            selected ? 'border-primary bg-primary text-white' : 'border-muted bg-card'
+          }`}
+        >
+          {selected && <Check size={18} strokeWidth={3.4} aria-hidden />}
+        </span>
       </span>
+      {children}
     </button>
   );
 }
@@ -36,7 +51,13 @@ export function SelectCircle({ selected, onToggle, label }: { selected: boolean;
 export function FileRow({ file, saved, selected, onToggle, onOpen, onUpload, onDelete }: Props) {
   return (
     <li className={`flex items-center gap-1 rounded-[20px] py-2.5 pr-2 pl-0 transition-colors ${selected ? 'bg-blue-soft ring-2 ring-blue/35' : 'bg-card shadow-[var(--shadow-card)]'}`}>
-      <SelectCircle selected={selected} onToggle={onToggle} label={`Select ${file.name}`} />
+      {/* the whole left strip of the card (full height) ticks the file */}
+      <SelectCircle
+        selected={selected}
+        onToggle={onToggle}
+        label={`Select ${file.name}`}
+        className="-my-2.5 w-14 justify-center self-stretch rounded-l-[20px] transition-colors hover:bg-ink/5"
+      />
 
       <button onClick={onOpen} className="flex min-w-0 flex-1 items-center gap-2.5 rounded-2xl text-left" aria-label={`Open ${file.name}`}>
         <FileThumb file={file} />

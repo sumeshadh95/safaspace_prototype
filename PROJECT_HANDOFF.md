@@ -207,7 +207,7 @@ A small module that pretends to be a cloud server.
 ---
 
 ## 8. Navigation: `src/App.tsx`
-- A simple **hash router**, so a refresh keeps the current screen: `#/` Home, `#/scan`, `#/results`, `#/photos`, `#/videos`, `#/documents`, `#/bring-back`.
+- A simple **hash router**, so a refresh keeps the current screen: `#/` (or no hash) is the **phone's own home screen** (`src/screens/Launcher.tsx`), `#/home` is SafeSpace's Home, then `#/scan`, `#/results`, `#/photos`, `#/videos`, `#/documents`, `#/bring-back`.
 - `#/scan` replaces itself with `#/results` when the scan finishes, so Back doesn't return to the scan.
 - The scroll position resets to the top on route change.
 - Layout: `PhoneFrame` > `ActionsProvider` > `<main>` (the scrolling area) + `DemoPanel`.
@@ -534,8 +534,28 @@ node scripts/cloud-tabs.mjs         # two-tab live cloud check
 - **Photos:** the 10 newest on-phone photos in two large columns.
 - **SafeSpace:** opens the normal app in dark mode, with `SaverBanner` ("Power saving is on" + "Simple home").
 
+### The phone's home screen and the power saving takeover (added after peer feedback)
+Testers could not tell the phone's power saving screens from SafeSpace, so the demo now makes the phone itself visible:
+- **`src/screens/Launcher.tsx`**: an Android-style home screen (clock and date, 8 app icons, a 4-icon dock, dark abstract wallpaper). It is the start screen (`#/`). Only **SafeSpace** opens; other icons show "Only SafeSpace works in this demo". SafeSpace grows out of its icon (`.app-open`, transform-origin from the icon), with the home screen kept behind it for 450 ms. `PhoneFrame` gets `fullBleed` (wallpaper behind a transparent status bar, `StatusBar tone="clear"`).
+- **`src/lib/system.ts`**: `switchPowerSaving(on, onSwitched?)` replaces direct `setPowerSaving` calls. It plays a 2.6 s takeover (`TAKEOVER`: switch at 1.1 s while the screen is dark, "on/off" text at 1.6 s). `useTakeover()` gives the running takeover.
+- **`src/components/SystemTakeover.tsx`**: the phone's panel slides down from the top (time, battery, "Power saving mode", "Turning on…" then "Power saving is on", a progress bar, "SafeSpace will close. Your phone will show only the most important apps."). Behind it the screen goes black and the closing screen shrinks away (`.app-close`). Rendered through `PhoneFrame`'s `overlay`, so it also covers the status bar. With reduced motion it shows still, on black.
+- Turning power saving **off** from its home screen returns to the phone's home screen; turning it off from inside SafeSpace keeps SafeSpace open.
+- The phone's own screens (home screen, takeover, power saving, `SaverBanner`, status bar) use **Roboto** (`font-system`, loaded with Atkinson from Google Fonts); SafeSpace keeps Atkinson Hyperlegible.
+- The SafeSpace confirm sheet now says "This is your phone's own setting. SafeSpace will close, …".
+- Reset demo returns to the phone's home screen. `journey.mjs`, `cloud-tabs.mjs` and the landing `capture-screenshots.mjs` open SafeSpace at `#/home`.
+- **Dark mode while power saving is on** (`QuickSettings.tsx`): the switch is `aria-disabled`, grey (`bg-card-2`) with a crossed-out moon (`MoonOff`: lucide Moon plus a backslash line, with a gap in the `--cut` colour behind it). The Home tile drops its On/Off pill and shows "Not available in power saving"; the Results pill shows the crossed moon, and a tap shows "Dark mode is not available in power saving. The screen stays dark to save battery." The journey checks it can't be changed.
+
+- **Bigger tick areas** (`FileRow.tsx`, `CategoryScreen.tsx`): `SelectCircle` is now the whole tap target. On a file row it is the full-height strip on the left of the card (56px wide, `-my-2.5 self-stretch`); "Select all (n)" wraps its words inside the button (full width), so tapping the words works and its accessible name is "Select all (n)".
+
+### Landing page polish (same round)
+- **Why SafeSpace** cards: gradient icon tiles with a soft coloured glow, a colour line along the top and a large faint icon in the corner (`FEATURE_LOOKS` in `Sections.tsx`).
+- **Sound familiar?**: speech bubbles in soft orange/violet/blue, gently tilted on wider screens, with a large faint quote mark; the answer is now a card with a "See how it works" link (`problem.link`).
+- **Hero**: a hint under the buttons (`hero.demoHint`): "The demo opens on a phone's home screen. Tap the green SafeSpace icon to start."
+- The showcase carousel (`ul` "App screens") is keyboard-focusable (`tabIndex={0}`), so axe reports no issues at 390, 768 and 1280.
+
 ### Tests
 - `scripts/journey.mjs` now also covers:
+  - the phone's home screen (another app's note, opening SafeSpace) and Reset demo returning to it
   - dark mode (toggle, Results and Photos screenshots, kept after a refresh, toggle back)
   - power saving: the sheet, turning it on, the keypad (040 123 4567), a call and End call, Contacts calling Anna, Messages, Camera shutter and Photos
   - SafeSpace inside power saving (dark), Simple home, a refresh keeping it on, and turning it off (back to light)
